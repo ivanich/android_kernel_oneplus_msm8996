@@ -291,6 +291,11 @@ static void msm_restart_prepare(const char *cmd)
 	/* Warm reset the PMIC to maintain memory contents. */
 	qpnp_pon_system_pwr_off(PON_POWER_OFF_WARM_RESET);
 
+	if (in_panic) {
+		qpnp_pon_set_restart_reason(PON_RESTART_REASON_REBOOT);
+		__raw_writel(0x77665501, restart_reason);
+	} else
+
 	if (cmd != NULL) {
         if (!strncmp(cmd, "rf", 2)) {
             qpnp_pon_set_restart_reason(PON_RESTART_REASON_RF);
